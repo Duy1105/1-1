@@ -1,6 +1,6 @@
 // Các biến để lấy các phần tử từ DOM
-const newSongLink = document.getElementById('newSongLink');
-const addSongButton = document.getElementById('addSongButton');
+const newSongLinks = document.getElementById('newSongLinks'); // Đổi từ newSongLink sang newSongLinks để nhận nhiều link
+const addSongsButton = document.getElementById('addSongsButton'); // Đổi từ addSongButton sang addSongsButton
 const toggleFileButton = document.getElementById('toggleFileButton');
 const musicLinksDiv = document.getElementById('musicLinks');
 const alertMessage = document.getElementById('alertMessage');
@@ -47,24 +47,30 @@ function showAlert(message, isError = false) {
     }, 3000);
 }
 
-// Thêm bài hát mới
-addSongButton.addEventListener('click', () => {
-    const link = newSongLink.value.trim();
-    if (link) {
-        fetch('/addSong', {
+// Thêm nhiều bài hát mới
+addSongsButton.addEventListener('click', () => {
+    const links = newSongLinks.value.trim().split(/,|\n/); // Chia nhiều link theo dấu phẩy hoặc xuống dòng
+    const validLinks = links.map(link => link.trim()).filter(link => link); // Loại bỏ khoảng trắng và link rỗng
+
+    if (validLinks.length > 0) {
+        fetch('/addSongs', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ link: link }),
+            body: JSON.stringify({ links: validLinks }),
         })
         .then(response => response.json())
         .then(data => {
             showAlert(data.message, !data.success);
-            newSongLink.value = ''; // Xóa trường nhập sau khi thêm bài hát
+            newSongLinks.value = ''; // Xóa textarea sau khi thêm
+        })
+        .catch(error => {
+            console.error("Error adding songs:", error);
+            showAlert("Lỗi khi thêm bài hát.", true);
         });
     } else {
-        showAlert("Vui lòng nhập link MP3 hợp lệ", true);
+        showAlert("Vui lòng nhập ít nhất một link MP3 hợp lệ", true);
     }
 });
 
