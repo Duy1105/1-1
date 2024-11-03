@@ -1,6 +1,5 @@
-// Các biến để lấy các phần tử từ DOM
-const newSongLinks = document.getElementById('newSongLinks'); // Nhận nhiều link
-const addSongsButton = document.getElementById('addSongsButton'); // Nút thêm nhiều bài hát
+const newSongLinks = document.getElementById('newSongLinks');
+const addSongsButton = document.getElementById('addSongsButton'); 
 const toggleFileButton = document.getElementById('toggleFileButton');
 const musicLinksDiv = document.getElementById('musicLinks');
 const alertMessage = document.getElementById('alertMessage');
@@ -11,11 +10,9 @@ const loginMessage = document.getElementById('loginMessage');
 const adminContent = document.getElementById('adminContent');
 const loginForm = document.getElementById('loginForm');
 
-// Thông tin đăng nhập đúng
 const correctUsername = "duy11";
 const correctPassword = "1105@";
 
-// Kiểm tra đăng nhập
 loginButton.addEventListener('click', () => {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
