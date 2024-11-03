@@ -1,0 +1,31 @@
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quản Trị Âm Nhạc</h1>
+        <div id="loginForm">
+            <h2>Đăng Nhập</h2>
+            <input type="text" id="username" placeholder="Tài khoản" required>
+            <input type="password" id="password" placeholder="Mật khẩu" required>
+            <button id="loginButton">Đăng Nhập</button>
+            <p id="loginMessage" class="error" style="display: none;"></p>
+        </div>
+
+        <div id="adminContent" style="display: none;">
+            <input type="text" id="newSongLink" placeholder="Nhập link nhạc MP3">
+            <button id="addSongButton">Thêm Bài Hát</button>
+            <button id="toggleFileButton">Hiển thị file music_links.json</button>
+            <div id="musicLinks"></div>
+            <div id="alertMessage" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

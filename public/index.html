@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Music Player</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Chương Trình Phát Nhạc</h1>
+        <input type="text" id="idInput" class="form-control" placeholder="Nhập ID bài hát">
+        <button id="playButton" class="btn btn-primary">Phát Nhạc</button>
+        <button id="randomButton" class="btn btn-secondary">Phát Ngẫu Nhiên</button>
+        <div id="songCount"></div>
+        <audio id="audio"></audio>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
