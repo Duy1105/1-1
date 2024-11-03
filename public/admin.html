@@ -2,43 +2,44 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"> <!-- Liên kết đến tệp CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Quản Trị Âm Nhạc</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap -->
 </head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Quản Trị Âm Nhạc</h1>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-5">
+        <h1 class="text-center text-3xl font-bold mb-4">Quản Trị Âm Nhạc</h1>
 
         <!-- Form Đăng Nhập -->
-        <div id="loginForm">
-            <h2>Đăng Nhập</h2>
-            <div class="form-group">
-                <input type="text" id="username" class="form-control" placeholder="Tài khoản" required>
+        <div id="loginForm" class="bg-white p-5 rounded shadow">
+            <h2 class="text-xl mb-3">Đăng Nhập</h2>
+            <div class="form-group mb-3">
+                <input type="text" id="username" class="form-control border border-gray-300 p-2 w-full" placeholder="Tài khoản" required>
             </div>
-            <div class="form-group">
-                <input type="password" id="password" class="form-control" placeholder="Mật khẩu" required>
+            <div class="form-group mb-3">
+                <input type="password" id="password" class="form-control border border-gray-300 p-2 w-full" placeholder="Mật khẩu" required>
             </div>
-            <button id="loginButton" class="btn btn-primary btn-block">Đăng Nhập</button>
-            <p id="loginMessage" class="error mt-2 text-danger" style="display: none;"></p>
+            <button id="loginButton" class="bg-blue-500 text-white p-2 rounded w-full">Đăng Nhập</button>
+            <p id="loginMessage" class="error mt-2 text-red-500" style="display: none;"></p>
         </div>
 
         <!-- Nội Dung Quản Trị -->
-        <div id="adminContent" style="display: none;">
-            <!-- Thêm bài hát mới -->
-            <h3 class="mt-4">Thêm Bài Hát Mới</h3>
-            <div class="form-group">
-                <textarea id="newSongLinks" class="form-control" rows="4" placeholder="Nhập các link MP3, cách nhau bằng dấu phẩy hoặc xuống dòng"></textarea>
+        <div id="adminContent" class="mt-5" style="display: none;">
+            <div class="bg-white p-5 rounded shadow">
+                <h3 class="text-2xl mb-3">Thêm Bài Hát Mới</h3>
+                <div class="form-group mb-3">
+                    <textarea id="newSongLinks" class="form-control border border-gray-300 p-2 w-full" rows="4" placeholder="Nhập các link MP3, cách nhau bằng dấu phẩy hoặc xuống dòng"></textarea>
+                </div>
+                <button id="addSongsButton" class="bg-green-500 text-white p-2 rounded">Thêm Bài Hát</button>
+
+                <!-- Hiển thị file JSON -->
+                <button id="toggleFileButton" class="bg-blue-300 text-white p-2 rounded mt-3">Hiển thị file music_links.json</button>
+                <div id="musicLinks" class="mt-3"></div>
+
+                <!-- Thông báo phản hồi -->
+                <div id="alertMessage" class="alert bg-yellow-100 text-yellow-700 p-2 rounded mt-3" style="display: none;"></div>
             </div>
-            <button id="addSongsButton" class="btn btn-success mb-3">Thêm Bài Hát</button>
-
-            <!-- Hiển thị file JSON -->
-            <button id="toggleFileButton" class="btn btn-info mb-3">Hiển thị file music_links.json</button>
-            <div id="musicLinks" class="mb-3"></div>
-
-            <!-- Thông báo phản hồi -->
-            <div id="alertMessage" class="alert" style="display: none;"></div>
         </div>
     </div>
 

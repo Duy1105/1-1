@@ -1,6 +1,6 @@
 // Các biến để lấy các phần tử từ DOM
-const newSongLinks = document.getElementById('newSongLinks'); // Đổi từ newSongLink sang newSongLinks để nhận nhiều link
-const addSongsButton = document.getElementById('addSongsButton'); // Đổi từ addSongButton sang addSongsButton
+const newSongLinks = document.getElementById('newSongLinks'); // Nhận nhiều link
+const addSongsButton = document.getElementById('addSongsButton'); // Nút thêm nhiều bài hát
 const toggleFileButton = document.getElementById('toggleFileButton');
 const musicLinksDiv = document.getElementById('musicLinks');
 const alertMessage = document.getElementById('alertMessage');

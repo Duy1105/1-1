@@ -7,14 +7,23 @@
     <link rel="stylesheet" href="style.css">
     <title>Music Player</title>
 </head>
-<body>
-    <div class="container">
-        <h1>Chương Trình Phát Nhạc</h1>
-        <input type="text" id="idInput" class="form-control" placeholder="Nhập ID bài hát">
-        <button id="playButton" class="btn btn-primary">Phát Nhạc</button>
-        <button id="randomButton" class="btn btn-secondary">Phát Ngẫu Nhiên</button>
-        <div id="songCount"></div>
-        <audio id="audio"></audio>
+<body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition duration-300">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold text-center mb-6">Chương Trình Phát Nhạc</h1>
+        <div class="mb-4">
+            <input type="text" id="idInput" class="form-control border border-gray-300 rounded-lg p-2 w-full" placeholder="Nhập ID bài hát">
+        </div>
+        <div class="flex justify-center space-x-4 mb-4">
+            <button id="playButton" class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Phát Nhạc</button>
+            <button id="randomButton" class="btn btn-secondary bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Phát Ngẫu Nhiên</button>
+            <button id="randomLoopButton">Phát Ngẫu Nhiên Liên Tiếp</button>
+
+        </div>
+        <div id="songCount" class="text-center mb-4"></div>
+        <audio id="audio" class="w-full" controls style="display: none;">
+            <source id="audioSource" src="" type="audio/mpeg">
+            Trình duyệt của bạn không hỗ trợ phần tử audio.
+        </audio>
     </div>
     <script src="app.js"></script>
 </body>

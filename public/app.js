@@ -2,6 +2,7 @@ const audioElement = document.getElementById('audio');
 const idInput = document.getElementById('idInput');
 const playButton = document.getElementById('playButton');
 const randomButton = document.getElementById('randomButton');
+const randomLoopButton = document.getElementById('randomLoopButton'); // Nút phát ngẫu nhiên liên tiếp
 const songCount = document.getElementById('songCount');
 
 // Đọc tệp music_links.json
@@ -44,6 +45,12 @@ function playRandom() {
   playMusicById(randomId); // Phát bài hát theo ID ngẫu nhiên
 }
 
+// Phát ngẫu nhiên liên tiếp
+function playRandomLoop() {
+  playRandom(); // Phát bài hát ngẫu nhiên lần đầu
+  audioElement.addEventListener('ended', playRandom); // Lắng nghe sự kiện kết thúc để phát bài hát ngẫu nhiên tiếp theo
+}
+
 // Thêm sự kiện cho nút phát
 playButton.addEventListener('click', () => {
   const id = idInput.value.trim();
@@ -54,6 +61,9 @@ playButton.addEventListener('click', () => {
 
 // Thêm sự kiện cho nút phát ngẫu nhiên
 randomButton.addEventListener('click', playRandom);
+
+// Thêm sự kiện cho nút phát ngẫu nhiên liên tiếp
+randomLoopButton.addEventListener('click', playRandomLoop);
 
 // Thêm sự kiện cho nhập ID
 idInput.addEventListener('keypress', (event) => {
@@ -67,4 +77,8 @@ idInput.addEventListener('keypress', (event) => {
 audioElement.style.display = 'none';
 audioElement.addEventListener('play', () => {
   audioElement.style.display = 'block'; // Hiện thanh audio khi phát nhạc
+});
+
+audioElement.addEventListener('ended', () => {
+  audioElement.style.display = 'none'; // Ẩn thanh audio khi bài hát kết thúc
 });
