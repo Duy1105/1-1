@@ -141,32 +141,32 @@ body.dark-mode button:hover {
 
 /* Button with Custom Hover Effects */
 .button {
-    background-color: #007bff; /* Màu nền nút */
-    color: white; /* Màu chữ */
-    border: none; /* Không có viền */
-    border-radius: 5px; /* Bo góc */
-    padding: 12px 20px; /* Đệm cho nút */
-    cursor: pointer; /* Thay đổi con trỏ khi hover */
-    transition: background-color 0.3s, transform 0.2s; /* Thời gian chuyển động */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 /* Hiệu ứng hover cho nút */
 .button:hover {
-    background-color: #0056b3; /* Màu nền khi hover */
-    transform: translateY(-2px); /* Nâng nút lên một chút */
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 button {
-    background-color: #4CAF50; /* Màu nền nút */
-    color: white; /* Màu chữ */
-    border: 2px solid transparent; /* Đường viền trong suốt */
-    border-radius: 5px; /* Bo góc */
-    padding: 12px 20px; /* Đệm cho nút */
-    cursor: pointer; /* Thay đổi con trỏ khi hover */
-    transition: background-color 0.3s, transform 0.2s, border-color 0.3s; /* Thời gian chuyển động */
+    background-color: #4CAF50;
+    color: white; 
+    border: 2px solid transparent; 
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, border-color 0.3s;
 }
 
 button:hover {
-    background-color: #45a049; /* Màu nền khi hover */
-    transform: translateY(-2px); /* Nâng nút lên một chút */
-    border-color: #0056b3; /* Màu viền khi hover */
+    background-color: #45a049;
+    transform: translateY(-2px);
+    border-color: #0056b3;
 }

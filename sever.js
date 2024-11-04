@@ -54,13 +54,11 @@ app.post('/addSongs', (req, res) => {
         const musicLinks = JSON.parse(data);
         let newId = Object.keys(musicLinks).length + 1;
 
-        // Lặp qua các link và thêm từng bài hát
         links.forEach(link => {
             musicLinks[newId] = link;
             newId++;
         });
 
-        // Ghi lại vào file
         fs.writeFile(path.join(__dirname, 'public', 'music_links.json'), JSON.stringify(musicLinks, null, 2), (err) => {
             if (err) {
                 return res.status(500).json({ message: "Không thể ghi file" });

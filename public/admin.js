@@ -46,9 +46,8 @@ function showAlert(message, isError = false) {
 
 // Thêm nhiều bài hát mới
 addSongsButton.addEventListener('click', () => {
-    const links = newSongLinks.value.trim().split(/,|\n/); // Chia nhiều link theo dấu phẩy hoặc xuống dòng
-    const validLinks = links.map(link => link.trim()).filter(link => link); // Loại bỏ khoảng trắng và link rỗng
-
+    const links = newSongLinks.value.trim().split(/,|\n/);
+    const validLinks = links.map(link => link.trim()).filter(link => link);
     if (validLinks.length > 0) {
         fetch('/addSongs', {
             method: 'POST',
@@ -60,7 +59,7 @@ addSongsButton.addEventListener('click', () => {
         .then(response => response.json())
         .then(data => {
             showAlert(data.message, !data.success);
-            newSongLinks.value = ''; // Xóa textarea sau khi thêm
+            newSongLinks.value = ''; 
         })
         .catch(error => {
             console.error("Error adding songs:", error);
@@ -74,7 +73,7 @@ addSongsButton.addEventListener('click', () => {
 // Hiển thị hoặc ẩn file JSON khi nhấn nút
 toggleFileButton.addEventListener('click', () => {
     if (isFileVisible) {
-        musicLinksDiv.innerHTML = '';  // Xóa nội dung khi ẩn
+        musicLinksDiv.innerHTML = '';  
         musicLinksDiv.classList.remove('visible');
         toggleFileButton.innerText = 'Hiển thị file music_links.json';
     } else {

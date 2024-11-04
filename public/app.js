@@ -5,16 +5,15 @@ const randomButton = document.getElementById('randomButton');
 const randomLoopButton = document.getElementById('randomLoopButton');
 const songCount = document.getElementById('songCount');
 
+let nextAudioElement = new Audio();
+let isRandomLooping = false;
+
+// Đọc tệp music_links.json
 fetch('music_links.json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
+  .then(response => response.json())
   .then(data => {
-    window.musicLinks = data; // Lưu trữ các liên kết nhạc vào biến toàn cục
-    updateSongCount(); // Cập nhật số lượng bài hát
+    window.musicLinks = data;
+    updateSongCount();
   })
   .catch(error => {
     console.error("Error fetching music links:", error);
@@ -32,6 +31,7 @@ function playMusicById(id) {
   if (link) {
     audioElement.src = link;
     audioElement.play();
+    preloadNextRandomSong();
   } else {
     alert("ID không hợp lệ");
   }
@@ -39,42 +39,59 @@ function playMusicById(id) {
 
 // Phát ngẫu nhiên bài hát
 function playRandom() {
-  const keys = Object.keys(musicLinks); // Lấy danh sách các ID bài hát
-  const randomId = keys[Math.floor(Math.random() * keys.length)]; // Chọn một ID ngẫu nhiên
-  playMusicById(randomId); // Phát bài hát theo ID ngẫu nhiên
+  const keys = Object.keys(musicLinks);
+  const randomId = keys[Math.floor(Math.random() * keys.length)];
+  playMusicById(randomId);
 }
 
 // Phát ngẫu nhiên liên tiếp
 function playRandomLoop() {
+  isRandomLooping = true;
   playRandom();
-  audioElement.addEventListener('ended', playRandom);
 }
+
+// Tải sẵn bài hát tiếp theo ngẫu nhiên
+function preloadNextRandomSong() {
+  const keys = Object.keys(musicLinks);
+  const randomId = keys[Math.floor(Math.random() * keys.length)];
+  nextAudioElement.src = musicLinks[randomId];
+}
+
+// Khi bài hát hiện tại kết thúc
+audioElement.addEventListener('ended', () => {
+  if (isRandomLooping) {
+    audioElement.src = nextAudioElement.src; 
+    audioElement.play();
+    preloadNextRandomSong(); 
+  } else {
+    audioElement.style.display = 'none';
+  }
+});
 
 playButton.addEventListener('click', () => {
   const id = idInput.value.trim();
   if (id) {
-    playMusicById(id); // Gọi hàm phát nhạc theo ID người dùng nhập
+    playMusicById(id);
   }
 });
 
 randomButton.addEventListener('click', playRandom);
 
-randomLoopButton.addEventListener('click', playRandomLoop);
+randomLoopButton.addEventListener('click', () => {
+  isRandomLooping = true;
+  playRandomLoop();
+});
 
 // Thêm sự kiện cho nhập ID
 idInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của phím Enter
-    playMusicById(idInput.value.trim()); // Gọi hàm phát nhạc theo ID
+    event.preventDefault();
+    playMusicById(idInput.value.trim());
   }
 });
 
 // Ẩn thanh audio ban đầu
 audioElement.style.display = 'none';
 audioElement.addEventListener('play', () => {
-  audioElement.style.display = 'block'; // Hiện thanh audio khi phát nhạc
-});
-
-audioElement.addEventListener('ended', () => {
-  audioElement.style.display = 'none'; // Ẩn thanh audio khi bài hát kết thúc
+  audioElement.style.display = 'block';
 });
