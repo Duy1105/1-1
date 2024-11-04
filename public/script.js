@@ -1,14 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Tự động đồng bộ chế độ sáng/tối
     const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.body.classList.toggle('dark-mode', isDarkMode);
-
-    // Chuyển đổi chế độ tối/sáng
     document.addEventListener('DOMContentLoaded', function () {
         const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.body.classList.toggle('dark-mode', isDarkMode);
-
-        // Lắng nghe sự thay đổi chế độ màu
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             document.body.classList.toggle('dark-mode', e.matches);
         });
@@ -27,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (songLink) {
                     audioSource.src = songLink;
-                    audioPlayer.style.display = 'block'; // Hiện thanh audio
+                    audioPlayer.style.display = 'block';
                     audioPlayer.load();
-                    audioPlayer.play(); // Phát bài hát
+                    audioPlayer.play();
                 } else {
                     alert("Không tìm thấy bài hát với ID này.");
                 }
@@ -43,16 +38,16 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 const keys = Object.keys(data);
-                const randomId = keys[Math.floor(Math.random() * keys.length)]; // Lấy ID ngẫu nhiên
+                const randomId = keys[Math.floor(Math.random() * keys.length)];
                 const songLink = data[randomId];
                 const audioPlayer = document.getElementById('audioPlayer');
                 const audioSource = document.getElementById('audioSource');
 
                 if (songLink) {
                     audioSource.src = songLink;
-                    audioPlayer.style.display = 'block'; // Hiện thanh audio
+                    audioPlayer.style.display = 'block';
                     audioPlayer.load();
-                    audioPlayer.play(); // Phát bài hát ngẫu nhiên
+                    audioPlayer.play();
                 } else {
                     alert("Không tìm thấy bài hát với ID ngẫu nhiên.");
                 }

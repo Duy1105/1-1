@@ -14,7 +14,6 @@ let isRandomLooping = false;
 let sleepTimer, warningTimer;
 let sleepTimeRemaining;
 
-// Đọc tệp music_links.json
 fetch('music_links.json')
   .then(response => {
     if (!response.ok) {
@@ -115,7 +114,7 @@ function setSleepMode(minutes) {
   clearTimeout(sleepTimer);
   clearTimeout(warningTimer);
 
-  sleepTimeRemaining = minutes * 60000; // Chuyển đổi phút sang mili-giây
+  sleepTimeRemaining = minutes * 60000;
 
   sleepTimer = setTimeout(() => {
     audioElement.pause();
@@ -125,7 +124,7 @@ function setSleepMode(minutes) {
       text: 'Nhạc đã dừng lại.',
       confirmButtonText: 'OK'
     });
-    hideSleepButtons(); // Ẩn các nút sau khi chế độ ngủ kết thúc
+    hideSleepButtons();
   }, sleepTimeRemaining);
 
   // Thông báo trước 10 giây để gia hạn
@@ -150,12 +149,12 @@ function setSleepMode(minutes) {
     }).then((result) => {
       if (result.isConfirmed) {
         const extraMinutes = parseInt(result.value, 10);
-        extendSleepMode(extraMinutes); // Gia hạn theo số phút người dùng đã nhập
+        extendSleepMode(extraMinutes);
       }
     });
   }, sleepTimeRemaining - 10000);
 
-  showSleepButtons(); // Hiển thị các nút gia hạn và hủy
+  showSleepButtons();
 }
 
 // Hàm gia hạn thêm chế độ ngủ
@@ -163,7 +162,7 @@ function extendSleepMode(extraMinutes) {
   clearTimeout(sleepTimer);
   clearTimeout(warningTimer);
 
-  sleepTimeRemaining += extraMinutes * 60000; // Cộng thêm thời gian
+  sleepTimeRemaining += extraMinutes * 60000;
 
   // Thiết lập lại sleepTimer và warningTimer
   sleepTimer = setTimeout(() => {
@@ -174,7 +173,7 @@ function extendSleepMode(extraMinutes) {
       text: 'Nhạc đã dừng lại.',
       confirmButtonText: 'OK'
     });
-    hideSleepButtons(); // Ẩn các nút sau khi chế độ ngủ kết thúc
+    hideSleepButtons();
   }, sleepTimeRemaining);
 
   warningTimer = setTimeout(() => {
@@ -236,10 +235,38 @@ setSleepTimerButton.addEventListener('click', () => {
 
   setSleepMode(minutes);
   Swal.fire('Thông báo', `Nhạc sẽ dừng sau ${minutes} phút.`, 'success');
-  sleepTimerInput.value = ''; // Reset lại giá trị input đặt chế độ ngủ
+  sleepTimerInput.value = '';
 });
 
 // Sự kiện cho nút hủy chế độ ngủ
 cancelSleepTimerButton.addEventListener('click', () => {
   cancelSleepMode();
 });
+
+// Đăng ký Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker đã được đăng ký với phạm vi: ', registration.scope);
+      })
+      .catch(error => {
+        console.error('Đăng ký Service Worker thất bại: ', error);
+      });
+  });
+}
+
+// Thêm Background Sync khi cần
+async function addNewSongs(links) {
+  // Gửi yêu cầu đến server hoặc xử lý bài hát ở đây
+
+  // Khi bạn muốn đồng bộ hóa với Background Sync
+  if ('serviceWorker' in navigator && 'SyncManager' in window) {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      await registration.sync.register('syncNewSongs');
+    } catch (error) {
+      console.error('Background sync failed:', error);
+    }
+  }
+}
