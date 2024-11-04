@@ -2,7 +2,6 @@ const newSongLinks = document.getElementById('newSongLinks');
 const addSongsButton = document.getElementById('addSongsButton'); 
 const toggleFileButton = document.getElementById('toggleFileButton');
 const musicLinksDiv = document.getElementById('musicLinks');
-const alertMessage = document.getElementById('alertMessage');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const loginButton = document.getElementById('loginButton');
@@ -24,25 +23,15 @@ loginButton.addEventListener('click', () => {
         loginMessage.style.display = 'none';
     } else {
         // Thông báo lỗi đăng nhập
-        loginMessage.textContent = "Tài khoản hoặc mật khẩu không chính xác.";
-        loginMessage.style.display = 'block';
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Tài khoản hoặc mật khẩu không chính xác.',
+        });
     }
 });
 
 let isFileVisible = false;
-
-// Hiển thị thông báo phản hồi
-function showAlert(message, isError = false) {
-    alertMessage.textContent = message;
-    alertMessage.classList.toggle('error', isError);
-    alertMessage.style.display = 'block';
-    alertMessage.style.opacity = '1';
-
-    setTimeout(() => {
-        alertMessage.style.opacity = '0';
-        setTimeout(() => alertMessage.style.display = 'none', 300);
-    }, 3000);
-}
 
 // Thêm nhiều bài hát mới
 addSongsButton.addEventListener('click', () => {
@@ -58,15 +47,27 @@ addSongsButton.addEventListener('click', () => {
         })
         .then(response => response.json())
         .then(data => {
-            showAlert(data.message, !data.success);
+            Swal.fire({
+                icon: data.success ? 'success' : 'error',
+                title: data.success ? 'Thành công!' : 'Lỗi!',
+                text: data.message,
+            });
             newSongLinks.value = ''; 
         })
         .catch(error => {
             console.error("Error adding songs:", error);
-            showAlert("Lỗi khi thêm bài hát.", true);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Lỗi khi thêm bài hát.',
+            });
         });
     } else {
-        showAlert("Vui lòng nhập ít nhất một link MP3 hợp lệ", true);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng nhập ít nhất một link MP3 hợp lệ.',
+        });
     }
 });
 
@@ -89,7 +90,11 @@ toggleFileButton.addEventListener('click', () => {
             })
             .catch(error => {
                 console.error("Error loading music_links.json:", error);
-                showAlert("Không thể tải file nhạc.", true);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể tải file nhạc.',
+                });
             });
     }
     isFileVisible = !isFileVisible;
