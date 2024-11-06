@@ -8,14 +8,11 @@ const loginButton = document.getElementById('loginButton');
 const loginMessage = document.getElementById('loginMessage');
 const adminContent = document.getElementById('adminContent');
 const loginForm = document.getElementById('loginForm');
-
 const correctUsername = "duy11";
 const correctPassword = "1105@";
-
 loginButton.addEventListener('click', () => {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
-
     if (username === correctUsername && password === correctPassword) {
         // Hiển thị nội dung quản trị
         loginForm.style.display = 'none';

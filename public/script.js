@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.classList.toggle('dark-mode', e.matches);
         });
     });
-
-
     // Phát bài hát theo ID
     document.getElementById('playSongButton').addEventListener('click', function () {
         const songId = document.getElementById('songIdInput').value;

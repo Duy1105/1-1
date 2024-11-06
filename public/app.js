@@ -4,16 +4,13 @@ const playButton = document.getElementById('playButton');
 const randomButton = document.getElementById('randomButton');
 const randomLoopButton = document.getElementById('randomLoopButton');
 const songCount = document.getElementById('songCount');
-
 const sleepTimerInput = document.getElementById('sleepTimerInput');
 const setSleepTimerButton = document.getElementById('setSleepTimerButton');
 const cancelSleepTimerButton = document.getElementById('cancelSleepTimerButton');
-
 let nextAudioElement = new Audio();
 let isRandomLooping = false;
 let sleepTimer, warningTimer;
 let sleepTimeRemaining;
-
 fetch('music_links.json')
   .then(response => {
     if (!response.ok) {

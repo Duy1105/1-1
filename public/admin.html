@@ -13,7 +13,6 @@
 <body class="bg-gray-100">
     <div class="container mx-auto mt-5">
         <h1 class="text-center text-3xl font-bold mb-4">Quản Trị Âm Nhạc</h1>
-
         <!-- Form Đăng Nhập -->
         <div id="loginForm" class="bg-white p-5 rounded shadow">
             <h2 class="text-xl mb-3">Đăng Nhập</h2>
@@ -26,7 +25,6 @@
             <button id="loginButton" class="bg-blue-500 text-white p-2 rounded w-full">Đăng Nhập</button>
             <p id="loginMessage" class="error mt-2 text-red-500" style="display: none;"></p>
         </div>
-
         <!-- Nội Dung Quản Trị -->
         <div id="adminContent" class="mt-5" style="display: none;">
             <div class="bg-white p-5 rounded shadow">
@@ -35,17 +33,14 @@
                     <textarea id="newSongLinks" class="form-control border border-gray-300 p-2 w-full" rows="4" placeholder="Nhập các link MP3, cách nhau bằng dấu phẩy hoặc xuống dòng"></textarea>
                 </div>
                 <button id="addSongsButton" class="bg-green-500 text-white p-2 rounded">Thêm Bài Hát</button>
-
                 <!-- Hiển thị file JSON -->
                 <button id="toggleFileButton" class="bg-blue-300 text-white p-2 rounded mt-3">Hiển thị file music_links.json</button>
                 <div id="musicLinks" class="mt-3"></div>
-
                 <!-- Thông báo phản hồi -->
                 <div id="alertMessage" class="alert bg-yellow-100 text-yellow-700 p-2 rounded mt-3" style="display: none;"></div>
             </div>
         </div>
     </div>
-
     <script src="admin.js"></script>
 </body>
 </html>
