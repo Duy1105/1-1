@@ -1,7 +1,6 @@
 const audioElement = document.getElementById('audio');
 const idInput = document.getElementById('idInput');
 const playButton = document.getElementById('playButton');
-const randomButton = document.getElementById('randomButton');
 const randomLoopButton = document.getElementById('randomLoopButton');
 const songCount = document.getElementById('songCount');
 const sleepTimerInput = document.getElementById('sleepTimerInput');
@@ -11,6 +10,7 @@ let nextAudioElement = new Audio();
 let isRandomLooping = false;
 let sleepTimer, warningTimer;
 let sleepTimeRemaining;
+
 fetch('music_links.json')
   .then(response => {
     if (!response.ok) {
@@ -44,17 +44,10 @@ function playMusicById(id) {
   }
 }
 
-// Phát ngẫu nhiên bài hát
-function playRandom() {
-  const keys = Object.keys(musicLinks);
-  const randomId = keys[Math.floor(Math.random() * keys.length)];
-  playMusicById(randomId);
-}
-
 // Phát ngẫu nhiên liên tiếp
 function playRandomLoop() {
   isRandomLooping = true;
-  playRandom();
+  playMusicById(Object.keys(musicLinks)[Math.floor(Math.random() * Object.keys(musicLinks).length)]);
 }
 
 // Tải sẵn bài hát tiếp theo ngẫu nhiên
@@ -80,11 +73,9 @@ playButton.addEventListener('click', () => {
   const id = idInput.value.trim();
   if (id) {
     playMusicById(id);
+    idInput.value = '';  // Reset ô nhập ID bài hát
   }
 });
-
-// Sự kiện cho nút phát ngẫu nhiên
-randomButton.addEventListener('click', playRandom);
 
 // Sự kiện cho nút phát ngẫu nhiên liên tiếp
 randomLoopButton.addEventListener('click', () => {
@@ -97,6 +88,7 @@ idInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
     playMusicById(idInput.value.trim());
+    idInput.value = '';  // Reset ô nhập ID bài hát
   }
 });
 
@@ -128,7 +120,6 @@ function setSleepMode(minutes) {
   warningTimer = setTimeout(() => {
     Swal.fire({
       title: 'Đã hết thời gian phát nhạc theo chế độ ngủ.',
-      text: 'Nhạc đã dừng lại.',
       icon: 'info',
       input: 'number',
       inputLabel: 'Nhập số phút gia hạn:',

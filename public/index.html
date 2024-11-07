@@ -11,32 +11,42 @@
 <body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition duration-300">
     <div class="container mx-auto p-4">
         <h1 class="text-3xl font-bold text-center mb-6">Chương Trình Phát Nhạc</h1>
+
+        <!-- Input cho ID hoặc link YouTube -->
         <div class="mb-4">
-            <input type="text" id="idInput" class="form-control border border-gray-300 rounded-lg p-2 w-full" placeholder="Nhập ID bài hát">
+            <input type="text" id="idInput" class="form-control border border-gray-300 rounded-lg p-2 w-full" placeholder="Nhập ID bài hát hoặc link YouTube">
         </div>
+
+        <!-- Các nút phát nhạc và phát ngẫu nhiên -->
         <div class="flex justify-center space-x-4 mb-4">
             <button id="playButton" class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Phát Nhạc</button>
-            <button id="randomButton" class="btn btn-secondary bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Phát Ngẫu Nhiên</button>
-            <button id="randomLoopButton" class="btn btn-secondary bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Phát Ngẫu Nhiên Liên Tiếp</button>
+            <button id="randomLoopButton" class="btn btn-secondary bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Phát Ngẫu Nhiên</button>
         </div>
+
+        <!-- Hiển thị số lượng bài hát -->
         <div id="songCount" class="text-center mb-4"></div>
 
+        <!-- Chế độ ngủ -->
         <h2 class="text-xl font-bold text-center mb-4">Chế Độ Ngủ</h2>
         <div class="flex justify-center space-x-4 mb-4">
             <input type="number" id="sleepTimerInput" class="form-control border border-gray-300 rounded-lg p-2 w-1/4" placeholder="Phút" min="1">
             <button id="setSleepTimerButton" class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Đặt Chế Độ Ngủ</button>
         </div>
+
+        <!-- Gia hạn và hủy chế độ ngủ -->
         <div class="flex justify-center space-x-4 mb-4">
             <input type="number" id="extendTimerInput" class="form-control border border-gray-300 rounded-lg p-2 w-1/4" placeholder="Gia hạn (phút)" min="1" style="display: none;">
             <button id="extendSleepTimerButton" class="btn btn-secondary bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" style="display: none;">Gia Hạn</button>
             <button id="cancelSleepTimerButton" class="btn btn-secondary bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" style="display: none;">Hủy Chế Độ Ngủ</button>
         </div>
 
+        <!-- Phần tử audio cho việc phát nhạc -->
         <audio id="audio" class="w-full" controls style="display: none;">
             <source id="audioSource" src="" type="audio/mpeg">
             Trình duyệt của bạn không hỗ trợ phần tử audio.
         </audio>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
