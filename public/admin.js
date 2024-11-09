@@ -8,8 +8,12 @@ const loginButton = document.getElementById('loginButton');
 const loginMessage = document.getElementById('loginMessage');
 const adminContent = document.getElementById('adminContent');
 const loginForm = document.getElementById('loginForm');
-const correctUsername = "duy11";
-const correctPassword = "1105@";
+const correctUsername = "duy";
+const correctPassword = "1105";
+const deleteIdInput = document.getElementById('deleteIdInput');
+const deleteButton = document.getElementById('deleteButton');
+
+// Xử lý đăng nhập
 loginButton.addEventListener('click', () => {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
@@ -95,4 +99,35 @@ toggleFileButton.addEventListener('click', () => {
             });
     }
     isFileVisible = !isFileVisible;
+});
+
+// Xóa bài hát theo ID
+deleteButton.addEventListener('click', () => {
+    const id = deleteIdInput.value.trim();
+    if (id) {
+        fetch(`/deleteSong/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('Thành công!', `Bài hát với ID ${id} đã được xóa.`, 'success');
+                // Cập nhật lại danh sách nhạc
+                toggleFileButton.click();
+            } else {
+                Swal.fire('Lỗi!', `Không tìm thấy bài hát với ID ${id}.`, 'error');
+            }
+            deleteIdInput.value = ''; // Xóa trường nhập sau khi xóa
+        })
+        .catch(error => {
+            console.error("Error deleting song:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Lỗi khi xóa bài hát.',
+            });
+        });
+    } else {
+        Swal.fire('Lỗi!', 'Vui lòng nhập ID bài hát cần xóa.', 'error');
+    }
 });
