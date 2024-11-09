@@ -11,6 +11,9 @@ let isRandomLooping = false;
 let sleepTimer, warningTimer;
 let sleepTimeRemaining;
 
+// Đường dẫn hình ảnh sẽ hiển thị trong thông báo trung tâm điều khiển
+const artworkUrl = 'https://i.imgur.com/LS60rDX.jpeg';
+
 fetch('music_links.json')
   .then(response => {
     if (!response.ok) {
@@ -27,22 +30,19 @@ fetch('music_links.json')
     Swal.fire('Lỗi!', 'Không thể tải danh sách bài hát.', 'error');
   });
 
-// Cập nhật số lượng bài hát
 function updateSongCount() {
   songCount.textContent = `Số bài hát hiện có: ${Object.keys(musicLinks).length}`;
 }
 
-// Kiểm tra nếu URL hợp lệ
 function isValidURL(url) {
   try {
-    new URL(url);  // Tạo một đối tượng URL từ chuỗi
-    return true; // Nếu không có lỗi, URL hợp lệ
+    new URL(url);
+    return true;
   } catch (_) {
-    return false; // Nếu có lỗi, URL không hợp lệ
+    return false;
   }
 }
 
-// Phát nhạc theo ID
 function playMusicById(id) {
   const link = musicLinks[id];
   if (link) {
@@ -54,7 +54,6 @@ function playMusicById(id) {
   }
 }
 
-// Phát nhạc từ link người dùng nhập
 function playMusicFromLink(link) {
   if (isValidURL(link)) {
     audioElement.src = link;
@@ -64,20 +63,17 @@ function playMusicFromLink(link) {
   }
 }
 
-// Phát ngẫu nhiên liên tiếp
 function playRandomLoop() {
   isRandomLooping = true;
   playMusicById(Object.keys(musicLinks)[Math.floor(Math.random() * Object.keys(musicLinks).length)]);
 }
 
-// Tải sẵn bài hát tiếp theo ngẫu nhiên
 function preloadNextRandomSong() {
   const keys = Object.keys(musicLinks);
   const randomId = keys[Math.floor(Math.random() * keys.length)];
   nextAudioElement.src = musicLinks[randomId];
 }
 
-// Khi bài hát hiện tại kết thúc
 audioElement.addEventListener('ended', () => {
   if (isRandomLooping) {
     audioElement.src = nextAudioElement.src;
@@ -88,47 +84,63 @@ audioElement.addEventListener('ended', () => {
   }
 });
 
-// Sự kiện cho nút phát nhạc
 playButton.addEventListener('click', () => {
-  const inputValue = idInput.value.trim(); // Nhập từ ô input
+  const inputValue = idInput.value.trim();
   if (isValidURL(inputValue)) {
-    playMusicFromLink(inputValue); // Nếu là link hợp lệ
+    playMusicFromLink(inputValue);
   } else if (inputValue) {
-    playMusicById(inputValue); // Nếu là ID hợp lệ
+    playMusicById(inputValue);
   }
-
-  idInput.value = '';  // Reset ô nhập ID bài hát hoặc link
+  idInput.value = '';
 });
 
-// Sự kiện cho nút phát ngẫu nhiên liên tiếp
 randomLoopButton.addEventListener('click', () => {
   isRandomLooping = true;
   playRandomLoop();
 });
 
-// Thêm sự kiện cho nhập ID hoặc link
 idInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
-    const inputValue = idInput.value.trim(); // Nhập từ ô input
+    const inputValue = idInput.value.trim();
 
     if (isValidURL(inputValue)) {
-      playMusicFromLink(inputValue); // Nếu là link hợp lệ
+      playMusicFromLink(inputValue);
     } else if (inputValue) {
-      playMusicById(inputValue); // Nếu là ID hợp lệ
+      playMusicById(inputValue);
     }
 
-    idInput.value = '';  // Reset ô nhập ID bài hát hoặc link
+    idInput.value = '';
   }
 });
 
-// Ẩn thanh audio ban đầu
 audioElement.style.display = 'none';
 audioElement.addEventListener('play', () => {
   audioElement.style.display = 'block';
 });
 
-// Hàm đặt chế độ ngủ
+// Media Session API để hiển thị điều khiển cơ bản ở trung tâm điều khiển
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: document.title, // Sử dụng tiêu đề của trang web
+    artwork: [
+      { src: artworkUrl, sizes: '512x512', type: 'image/jpeg' }
+    ]
+  });
+
+  navigator.mediaSession.setActionHandler('play', () => audioElement.play());
+  navigator.mediaSession.setActionHandler('pause', () => audioElement.pause());
+  navigator.mediaSession.setActionHandler('previoustrack', () => {
+    // Xử lý chuyển bài trước (nếu cần)
+  });
+  navigator.mediaSession.setActionHandler('nexttrack', () => {
+    if (isRandomLooping) {
+      playMusicById(Object.keys(musicLinks)[Math.floor(Math.random() * Object.keys(musicLinks).length)]);
+    }
+  });
+}
+
+// Chế độ ngủ
 function setSleepMode(minutes) {
   clearTimeout(sleepTimer);
   clearTimeout(warningTimer);
@@ -174,7 +186,6 @@ function setSleepMode(minutes) {
   showSleepButtons();
 }
 
-// Hàm gia hạn thêm chế độ ngủ
 function extendSleepMode(extraMinutes) {
   clearTimeout(sleepTimer);
   clearTimeout(warningTimer);
@@ -195,7 +206,6 @@ function extendSleepMode(extraMinutes) {
   warningTimer = setTimeout(() => {
     Swal.fire({
       title: 'Đã hết thời gian phát nhạc theo chế độ ngủ.',
-      text: 'Nhạc đã dừng lại.',
       icon: 'info',
       input: 'number',
       inputLabel: 'Nhập số phút gia hạn:',
@@ -221,7 +231,6 @@ function extendSleepMode(extraMinutes) {
   Swal.fire('Thành công!', `Chế độ ngủ đã được gia hạn thêm ${extraMinutes} phút.`, 'success');
 }
 
-// Hàm hủy chế độ ngủ
 function cancelSleepMode() {
   clearTimeout(sleepTimer);
   clearTimeout(warningTimer);
@@ -229,17 +238,14 @@ function cancelSleepMode() {
   hideSleepButtons();
 }
 
-// Hiển thị nút hủy
 function showSleepButtons() {
   cancelSleepTimerButton.style.display = 'inline-block';
 }
 
-// Ẩn các nút khi chế độ ngủ kết thúc hoặc bị hủy
 function hideSleepButtons() {
   cancelSleepTimerButton.style.display = 'none';
 }
 
-// Sự kiện cho nút đặt chế độ ngủ
 setSleepTimerButton.addEventListener('click', () => {
   const minutes = parseInt(sleepTimerInput.value, 10);
 
@@ -253,7 +259,6 @@ setSleepTimerButton.addEventListener('click', () => {
   sleepTimerInput.value = '';
 });
 
-// Sự kiện cho nút hủy chế độ ngủ
 cancelSleepTimerButton.addEventListener('click', () => {
   cancelSleepMode();
 });
