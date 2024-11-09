@@ -1,12 +1,27 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
-// Ghi log IP người dùng truy cập
+// Lấy thông tin IP của máy chủ khi bắt đầu chạy server
+axios.get('https://ipinfo.io/json')
+    .then(response => {
+        const data = response.data;
+        console.log("Thông tin về IP của máy chủ:");
+        console.log("| Địa chỉ IP |", data.ip);
+        console.log("| Quốc gia   |", data.country);
+        console.log("| Thành phố  |", data.city);
+        console.log("| Nhà Mạng   |", data.org);
+    })
+    .catch(error => {
+        console.log("Lỗi khi lấy thông tin IP:", error);
+    });
+
+// Ghi log IP người dùng truy cập (nếu cần)
 app.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     console.log(`IP người dùng truy cập: ${ip}`);

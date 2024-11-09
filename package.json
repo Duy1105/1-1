@@ -10,7 +10,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.7.7",
     "express": "^4.21.1",
-    "fs": "git+https://github.com/npm/fs.git"
+    "fs": "git+https://github.com/npm/fs.git",
+    "path": "^0.12.7"
   }
 }
