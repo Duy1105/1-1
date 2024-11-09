@@ -11,7 +11,6 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.1",
-    "fs": "git+https://github.com/npm/fs.git",
-    "ytdl-core": "git+https://github.com/khlevon/node-ytdl-core.git"
+    "fs": "git+https://github.com/npm/fs.git"
   }
 }

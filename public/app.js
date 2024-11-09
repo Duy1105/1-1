@@ -32,6 +32,16 @@ function updateSongCount() {
   songCount.textContent = `Số bài hát hiện có: ${Object.keys(musicLinks).length}`;
 }
 
+// Kiểm tra nếu URL hợp lệ
+function isValidURL(url) {
+  try {
+    new URL(url);  // Tạo một đối tượng URL từ chuỗi
+    return true; // Nếu không có lỗi, URL hợp lệ
+  } catch (_) {
+    return false; // Nếu có lỗi, URL không hợp lệ
+  }
+}
+
 // Phát nhạc theo ID
 function playMusicById(id) {
   const link = musicLinks[id];
@@ -41,6 +51,16 @@ function playMusicById(id) {
     preloadNextRandomSong();
   } else {
     Swal.fire('Lỗi!', 'ID không hợp lệ', 'error');
+  }
+}
+
+// Phát nhạc từ link người dùng nhập
+function playMusicFromLink(link) {
+  if (isValidURL(link)) {
+    audioElement.src = link;
+    audioElement.play();
+  } else {
+    Swal.fire('Lỗi!', 'Link không hợp lệ!', 'error');
   }
 }
 
@@ -60,9 +80,9 @@ function preloadNextRandomSong() {
 // Khi bài hát hiện tại kết thúc
 audioElement.addEventListener('ended', () => {
   if (isRandomLooping) {
-    audioElement.src = nextAudioElement.src; 
+    audioElement.src = nextAudioElement.src;
     audioElement.play();
-    preloadNextRandomSong(); 
+    preloadNextRandomSong();
   } else {
     audioElement.style.display = 'none';
   }
@@ -70,11 +90,14 @@ audioElement.addEventListener('ended', () => {
 
 // Sự kiện cho nút phát nhạc
 playButton.addEventListener('click', () => {
-  const id = idInput.value.trim();
-  if (id) {
-    playMusicById(id);
-    idInput.value = '';  // Reset ô nhập ID bài hát
+  const inputValue = idInput.value.trim(); // Nhập từ ô input
+  if (isValidURL(inputValue)) {
+    playMusicFromLink(inputValue); // Nếu là link hợp lệ
+  } else if (inputValue) {
+    playMusicById(inputValue); // Nếu là ID hợp lệ
   }
+
+  idInput.value = '';  // Reset ô nhập ID bài hát hoặc link
 });
 
 // Sự kiện cho nút phát ngẫu nhiên liên tiếp
@@ -83,12 +106,19 @@ randomLoopButton.addEventListener('click', () => {
   playRandomLoop();
 });
 
-// Thêm sự kiện cho nhập ID
+// Thêm sự kiện cho nhập ID hoặc link
 idInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
-    playMusicById(idInput.value.trim());
-    idInput.value = '';  // Reset ô nhập ID bài hát
+    const inputValue = idInput.value.trim(); // Nhập từ ô input
+
+    if (isValidURL(inputValue)) {
+      playMusicFromLink(inputValue); // Nếu là link hợp lệ
+    } else if (inputValue) {
+      playMusicById(inputValue); // Nếu là ID hợp lệ
+    }
+
+    idInput.value = '';  // Reset ô nhập ID bài hát hoặc link
   }
 });
 
@@ -116,7 +146,6 @@ function setSleepMode(minutes) {
     hideSleepButtons();
   }, sleepTimeRemaining);
 
-  // Thông báo trước 10 giây để gia hạn
   warningTimer = setTimeout(() => {
     Swal.fire({
       title: 'Đã hết thời gian phát nhạc theo chế độ ngủ.',
@@ -152,7 +181,6 @@ function extendSleepMode(extraMinutes) {
 
   sleepTimeRemaining += extraMinutes * 60000;
 
-  // Thiết lập lại sleepTimer và warningTimer
   sleepTimer = setTimeout(() => {
     audioElement.pause();
     Swal.fire({
@@ -190,7 +218,6 @@ function extendSleepMode(extraMinutes) {
     });
   }, sleepTimeRemaining - 10000);
 
-  // Thông báo gia hạn thành công
   Swal.fire('Thành công!', `Chế độ ngủ đã được gia hạn thêm ${extraMinutes} phút.`, 'success');
 }
 
@@ -230,31 +257,3 @@ setSleepTimerButton.addEventListener('click', () => {
 cancelSleepTimerButton.addEventListener('click', () => {
   cancelSleepMode();
 });
-
-// Đăng ký Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('Service Worker đã được đăng ký với phạm vi: ', registration.scope);
-      })
-      .catch(error => {
-        console.error('Đăng ký Service Worker thất bại: ', error);
-      });
-  });
-}
-
-// Thêm Background Sync khi cần
-async function addNewSongs(links) {
-  // Gửi yêu cầu đến server hoặc xử lý bài hát ở đây
-
-  // Khi bạn muốn đồng bộ hóa với Background Sync
-  if ('serviceWorker' in navigator && 'SyncManager' in window) {
-    try {
-      const registration = await navigator.serviceWorker.ready;
-      await registration.sync.register('syncNewSongs');
-    } catch (error) {
-      console.error('Background sync failed:', error);
-    }
-  }
-}
